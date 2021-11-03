@@ -3,6 +3,7 @@ import firebase from "firebase";
 import { storage, db } from "./firebase";
 import "./ImageUpload.css";
 import { Input, Button } from "@material-ui/core";
+import axios from "./axios";
 
 const ImageUpload = ({ username }) => {
   const [image, setImage] = useState(null);
@@ -40,7 +41,13 @@ const ImageUpload = ({ username }) => {
           .then((url) => {
             setUrl(url);
 
-            // post image inside db
+            //posting to mongo mern
+            axios.post("/upload", {
+              caption: caption,
+              user: username,
+              image: url,
+            });
+            // post image inside db /* pushing to firebase */
             db.collection("posts").add({
               imageUrl: url,
               caption: caption,
